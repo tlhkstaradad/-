@@ -620,7 +620,7 @@
         }
 
     
-        var startDateStr = '2025-5-18 12:00:00';
+        var startDateStr = '2021-12-03 12:00:00';
         var startDate = new Date(formatToISO8601(startDateStr));
        
         var timeDisplay = document.getElementById('time-display');
@@ -654,15 +654,24 @@
         document.addEventListener('DOMContentLoaded', function() {
             const anniversaryDateElement = document.getElementById('anniversaryDate');
             const countdownElement = document.getElementById('countdownDisplay');
-            if (anniversaryDateElement) {
-                const anniversaryStr = anniversaryDateElement.textContent;
-                const [year, month, day] = anniversaryStr.split('-').map(Number);
-                const nextAnniversary = new Date(year + 1, month - 1, day);
-                const currentDate = new Date();
-                const timeDiff = nextAnniversary - currentDate;
-                const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-                countdownElement.textContent = `还有 ${daysDiff} 天`;
-            }
+ if (anniversaryDateElement) {
+        const anniversaryStr = anniversaryDateElement.textContent;
+        const [originalYear, month, day] = anniversaryStr.split('-').map(Number);
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        
+        // 计算今年的周年纪念日
+        let thisYearAnniversary = new Date(currentYear, month - 1, day);
+        
+        // 如果今年的周年纪念日已过，计算明年的周年纪念日
+        if (thisYearAnniversary < currentDate) {
+            thisYearAnniversary = new Date(currentYear + 1, month - 1, day);
+        }
+        
+        const timeDiff = thisYearAnniversary - currentDate;
+        const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+        countdownElement.textContent = `还有 ${daysDiff} 天`;
+    }
 
           
             const firstMeetDateElement = document.getElementById('firstMeetDate');
